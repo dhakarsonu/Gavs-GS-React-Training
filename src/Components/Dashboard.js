@@ -3,15 +3,18 @@ import AppHeader from './AppHeader';
 import AppBody from './AppBody';
 import AppContext from './Common/appContext';
 import React from 'react';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {updateName} from '../Actions/appAction';
 
 const Dashboard = (props) => {
 
-    const[name,setName] = React.useState("Dashboard");
+    const[name1,setName] = React.useState("Dashboard");
 
     return (
         <AppContext.Provider value={{
             ...props,
-            name,
+            name1,
             setName
         }}>
             <div className="App">
@@ -22,4 +25,10 @@ const Dashboard = (props) => {
       );
 };
 
-export default Dashboard;
+const mapStateToProps = (state, ownProps) => ({
+    name : state.AppReducerNew.name,
+});
+
+const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({ updateName}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

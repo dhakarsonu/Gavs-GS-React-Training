@@ -46,13 +46,15 @@ class AppBody extends Component{
         console.log("componentWillReceiveProps");
     }
 
-    colorChangeHandler = (color,setName) =>{
+    colorChangeHandler = (color,context) =>{
         if(color === "black"){
             this.setState({color:'white'});
             return;
         }
-        setName("Application");
+        context.setName("Application");
         this.setState({color:'black'});
+        context.history.replace("/profile");
+        window.location.href = "/profile";
     }
     
     render(){
@@ -63,7 +65,7 @@ class AppBody extends Component{
                         <React.Fragment>
                             <div className="App-body">
                                 <span style={{color : `${this.state.color}`}}>{context.name} -> Application Body</span>
-                                <button onClick={_=>{this.colorChangeHandler(this.state.color,context.setName)}}>Change My Color</button>
+                                <button onClick={_=>{this.colorChangeHandler(this.state.color,context)}}>Change My Color</button>
                             </div>
                         </React.Fragment>
                     )

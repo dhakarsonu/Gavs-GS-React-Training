@@ -24,12 +24,14 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Dashboard from './Components/Dashboard';
+import Profile from './Components/Profile';
 
 const App = ({ store, history }) => (
   <Provider store={store}>
       <Router history={history}>
         <Routes>
-          <Route exact path="/" element={<Dashboard />} />
+          <Route exact path="/" element={<Dashboard history={history}/>} />
+          <Route exact path="/profile" element={<Profile />} />
         </Routes>
       </Router>
   </Provider>
