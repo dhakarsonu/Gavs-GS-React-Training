@@ -1,79 +1,49 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import AppContext from './Common/appContext';
+import Loader from './Common/Loader';
+import Code from  './Code';
+import { useDispatch, useSelector } from 'react-redux';
+import {UPDATE_TYPICODE} from '../reducer/AppReducer';
 
-class AppBody extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            color : "black",
-            font : "",
-            size : 14,
-            profile : {}
-        };
-    }
+const AppBody = () =>{
+    const [init,setinit] = React.useState(false);
+    const dispatch = useDispatch();
+    const typicode = useSelector(state => state.AppReducer.typicode);
 
-    componentDidMount(){
-        console.log("componentDidMount");
-        // fetch('/load/data').then((response)=>{
-        //     if(response && response.data){
-        //         this.setState({profile : response.data});
-        //     }
-        // });
-        
-    }
-
-    componentWillMount(){
-        console.log("componentWillMount");
-    }
-
-    componentDidUpdate(){
-        console.log("componentDidUpdate");
-    }
-
-    componentWillUpdate(){
-        console.log("componentDidUpdate");
-    }
-
-    componentWillUnmount(){
-        console.log("componentDidUpdate");
-    }
-
-    componentDidCatch(){
-        console.log("componentDidCatch");
-    }
-
-    componentWillReceiveProps(){
-        console.log("componentWillReceiveProps");
-    }
-
-    colorChangeHandler = (color,context) =>{
-        if(color === "black"){
-            this.setState({color:'white'});
+    useEffect(()=>{
+        if(init)
             return;
-        }
-        context.setName("Application");
-        this.setState({color:'black'});
-        context.history.replace("/profile");
-        window.location.href = "/profile";
+        setinit(true);
+        const options = {
+            method: 'GET'
+        };
+        
+        fetch('https://jsonplaceholder.typicode.com/posts', options)
+            .then(response => response.json())
+            .then(response => {dispatch(UPDATE_TYPICODE({typicode: response}))})
+            .catch(err => console.error(err));
+    },[init]);
+
+    const renderFoodList = () =>{
+        if(typicode && !typicode.length)
+            return <Loader />
+        
+        let components = [];
+
+        typicode.map((code)=>{
+            components.push(<Code code={code}/>)
+        })
+
+        return components;
     }
-    
-    render(){
-        return(
-            <AppContext.Consumer>
-                {
-                    context => (
-                        <React.Fragment>
-                            <div className="App-body">
-                                <span style={{color : `${this.state.color}`}}>{context.name} -> Application Body</span>
-                                <button onClick={_=>{this.colorChangeHandler(this.state.color,context)}}>Change My Color</button>
-                            </div>
-                        </React.Fragment>
-                    )
-                }
-            </AppContext.Consumer>
-            
-      )
-    }
-}
+
+    return(
+        <div className="food-list-wrapper">
+            {
+                renderFoodList()
+            }
+        </div>
+    )
+};
 
 export default AppBody;

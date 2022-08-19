@@ -1,8 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import store from './store';
+import history from './history';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+describe('App Page',() => {
+  beforeEach(() => {
+    render(<App store={store} history={history} />);
+  })
+ test("renders app header", () => {
+  const startButton = screen.getByText(/Start/i);
+  expect(startButton).toBeInTheDocument();
+  const header = screen.findByTestId("header-element");
+  expect(startButton).toBeInTheDocument();
+ })
+})

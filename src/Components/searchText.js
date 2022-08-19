@@ -13,7 +13,7 @@ const SearchText = (props) => {
     });
 
     return (
-        <div className="result">
+        <div className="result" onMouseOver={props.startClickHander}>
             {props.query}
         </div>
     );

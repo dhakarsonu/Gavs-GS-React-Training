@@ -10,7 +10,7 @@ import {updateName} from '../Actions/appAction';
 const Dashboard = (props) => {
 
     const[name1,setName] = React.useState("Dashboard");
-
+    
     return (
         <AppContext.Provider value={{
             ...props,
